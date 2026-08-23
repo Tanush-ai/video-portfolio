@@ -9,9 +9,9 @@ const HeroSection = () => {
   const videoContainerRef = useRef(null);
   const videoRef = useRef(null);
   const loaderRef = useRef(null);
-  const loaderCounterRef = useRef(null);
   const [loaderDone, setLoaderDone] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [currentText, setCurrentText] = useState("దేవేందర్");
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -28,24 +28,6 @@ const HeroSection = () => {
       },
     });
 
-    const counter = { value: 0 };
-
-    // Loader counter 0 → 100
-    tl.to(
-      counter,
-      {
-        value: 100,
-        duration: 1.6,
-        ease: "power2.inOut",
-        onUpdate: () => {
-          if (loaderCounterRef.current) {
-            loaderCounterRef.current.innerText = `${Math.floor(counter.value)}`;
-          }
-        },
-      },
-      "start"
-    );
-
     // Loader slide up reveal
     tl.to(
       loaderRef.current,
@@ -54,18 +36,7 @@ const HeroSection = () => {
         duration: 1.1,
         ease: "power3.out",
       },
-      "start+=1.8"
-    );
-
-    // Fade counter out
-    tl.to(
-      loaderCounterRef.current,
-      {
-        autoAlpha: 0,
-        duration: 0.5,
-        ease: "power2.out",
-      },
-      "start+=1.6"
+      "start+=2.0"
     );
 
     // Background video reveal (fade & scale down to 1)
@@ -77,11 +48,17 @@ const HeroSection = () => {
         duration: 1.2,
         ease: "power2.out",
       },
-      "start+=2.0"
+      "start+=2.2"
     );
+
+    // Timeout-based interactive name transitions in different languages
+    const t1 = setTimeout(() => setCurrentText("देवेन्द्र"), 650);
+    const t2 = setTimeout(() => setCurrentText("DEVENDER"), 1300);
 
     return () => {
       tl.kill();
+      clearTimeout(t1);
+      clearTimeout(t2);
       document.body.style.overflow = "";
     };
   }, []);
@@ -159,21 +136,40 @@ const HeroSection = () => {
         style={{
           backgroundColor: "#111111",
           zIndex: 100002,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
-        <div
-          id="loader-counter"
-          ref={loaderCounterRef}
-          style={{
-            color: "#F5F1EA",
-            fontFamily: "'Druk Condensed', 'Barlow Condensed', 'Anton', sans-serif",
-            fontWeight: 800,
-            fontSize: "8vw",
-            letterSpacing: "0.02em",
-          }}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="flex flex-col items-center justify-center text-center px-4"
         >
-          0
-        </div>
+          {/* Logo Sketch Avatar */}
+          <img
+            src="/avatar-logo.jpg"
+            alt="Logo"
+            className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border border-white/10 mb-6 object-cover shadow-lg"
+          />
+
+          {/* Language Text Animating */}
+          <div className="h-10 flex items-center justify-center overflow-hidden">
+            <motion.div
+              key={currentText}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[#F5F1EA] text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-widest uppercase"
+              style={{ fontFamily: "'Neue Montreal', 'Inter', sans-serif" }}
+            >
+              {currentText}
+            </motion.div>
+          </div>
+        </motion.div>
       </div>
 
       {/* Hero Section Container */}
