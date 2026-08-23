@@ -10,8 +10,9 @@ import Link from "next/link";
 import MusicButton from "./MusicButton";
 
 // Shared contact targets — same as Menu/Contact/SiteFooter.
-const EMAIL = "abdelruhamanelfekky@gmail.com";
-const WHATSAPP_URL = "https://wa.me/201080620024";
+const EMAIL = "devendhargopagoni@gmail.com";
+const WHATSAPP_URL = "https://wa.me/917569949639";
+const TELEGRAM_URL = "https://t.me/+917569949639";
 
 // Smooth-scroll to an in-page section. Uses the global Lenis instance
 // exposed by SmoothScroll (window.__lenis) so mobile nav clicks feel
@@ -174,6 +175,16 @@ function Navbar() {
               className="flex items-center justify-between border-2 border-fg text-fg rounded-full px-5 py-4 text-sm tracking-[0.2em] font-semibold"
             >
               <span>WHATSAPP</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+            <a
+              href={TELEGRAM_URL}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center justify-between border-2 border-fg text-fg rounded-full px-5 py-4 text-sm tracking-[0.2em] font-semibold"
+            >
+              <span>TELEGRAM</span>
               <span aria-hidden="true">↗</span>
             </a>
           </div>

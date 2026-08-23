@@ -3,7 +3,7 @@ import { useSpring, animated } from "@react-spring/web";
 
 // Same address used in `Contact` and `SiteFooter`. If any of these change,
 // keep all three places in sync.
-const EMAIL = "abdelruhamanelfekky@gmail.com";
+const EMAIL = "devendhargopagoni@gmail.com";
 
 // "LET'S TALK" was previously a non-interactive div. It now opens the user's
 // mail client straight to the real contact email — which is also wired up

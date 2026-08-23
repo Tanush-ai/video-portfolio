@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 // Real contact info — kept in sync with what's already in `SiteFooter`.
 // If any of these change, update them in both places.
 const PORTFOLIO_URL = "https://devendhargopagoni.netlify.app/";
+const EMAIL_ADDRESS = "devendhargopagoni@gmail.com";
 
 const ArrowUpRight = () => (
   <svg
@@ -102,13 +103,11 @@ const Contact = () => {
 
       <a
         id="ct-email"
-        href={PORTFOLIO_URL}
-        target="_blank"
-        rel="noreferrer"
+        href={`mailto:${EMAIL_ADDRESS}`}
         ref={emailRef}
-        aria-label="Devender Portfolio"
+        aria-label="Email Devender"
       >
-        devendhargopagoni.netlify.app
+        devendhargopagoni@gmail.com
       </a>
 
       <div id="ct-actions" ref={ctaRef}>
