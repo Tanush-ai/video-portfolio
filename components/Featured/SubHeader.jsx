@@ -25,8 +25,8 @@ const SERVICES = [
 
 const SubHeader = () => {
   return (
-    <div className='relative md:absolute md:top-1/5 left-0 md:left-1/2 w-full md:-translate-x-1/2 md:mt-40 z-10 flex flex-col md:items-start items-center px-5 md:px-0'>
-      <div className='w-full md:w-1/2 text-base md:text-2xl flex flex-col gap-3 md:gap-4 leading-relaxed md:leading-snug text-center md:text-left'>
+    <div className='w-full flex flex-col items-start text-left px-4 md:px-0'>
+      <div className='w-full text-base md:text-lg lg:text-xl flex flex-col gap-3 md:gap-4 leading-relaxed text-left'>
         <p>
           Hi, I&apos;m Devender, a Full-Stack Web Developer and UI/UX-focused Product Builder.
         </p>
@@ -35,7 +35,7 @@ const SubHeader = () => {
         </p>
       </div>
 
-      <div className='about-inline-services w-full md:w-1/2 mt-8 md:mt-12 h-auto md:h-[36vh]'>
+      <div className='about-inline-services w-full mt-8 md:mt-12 h-auto'>
         <div className='about-inline-services__head'>
           <span className='about-inline-services__label'>CORE EXPERTISE</span>
         </div>

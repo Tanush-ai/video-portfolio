@@ -87,10 +87,16 @@ function Navbar() {
             href="/"
             aria-label="Home"
             onClick={(e) => handleMobileNav(e, "top")}
-            className="tracking-wider font-semibold text-2xl cursor-pointer text-fg"
-            style={{ letterSpacing: "-0.03em" }}
+            className="flex items-center gap-2.5 cursor-pointer hover:opacity-85 transition-opacity"
           >
-            DEVENDER
+            <img
+              src="/avatar-logo.jpg"
+              alt="Devender"
+              className="w-8 h-8 rounded-full object-cover border border-fg/10"
+            />
+            <span className="tracking-wider font-semibold text-lg text-fg" style={{ letterSpacing: "-0.03em" }}>
+              DEVENDER
+            </span>
           </Link>
           <button
             type="button"
@@ -177,9 +183,14 @@ function Navbar() {
       {/* Navbar large screen */}
       <div className="fixed top-0 left-0 w-full px-6 lg:px-20 z-[100001] ">
         <div className="items-start justify-between hidden lg:flex pt-14 pb-10">
-          <div className="tracking-wider font-AeonikMedium text-4xl">
-            <Link href="/" aria-label="Home" className="text-fg hover:opacity-85 transition-opacity">
-              D.
+          <div className="flex items-center">
+            <Link href="/" aria-label="Home" className="flex items-center gap-3 hover:opacity-85 transition-opacity">
+              <img
+                src="/avatar-logo.jpg"
+                alt="Devender"
+                className="w-10 h-10 rounded-full object-cover border border-fg/10"
+              />
+              <span className="font-AeonikMedium text-2xl tracking-wider text-fg uppercase">DEVENDER.</span>
             </Link>
           </div>
           <div className="hidden lg:flex items-center justify-around font-AeonikMedium">

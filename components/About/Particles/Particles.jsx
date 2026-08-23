@@ -46,9 +46,11 @@ const Stars = () => {
   const initialGeometry = new THREE.SphereGeometry(2, 64, 64);
   const scrollObject = useScroll();
   let  finalGeometry = undefined;
-  fetchData('/assets/cross.buf').then(mesh => {
-    finalGeometry = mesh.geometry;
-  })
+  if (typeof window !== "undefined") {
+    fetchData('/assets/cross.buf').then(mesh => {
+      finalGeometry = mesh.geometry;
+    }).catch(err => console.error("fetchData error:", err));
+  }
 
   starsGeometry.setAttribute("position", new THREE.Float32BufferAttribute(initialGeometry.attributes.position.array, 3));
 

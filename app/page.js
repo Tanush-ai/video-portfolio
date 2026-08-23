@@ -42,28 +42,40 @@ export default function Home() {
     if (!blur || !footer) return;
 
     // The GradualBlur effect should be visible across the whole site, but
-    // disabled while the footer is on screen — the footer is the one
-    // component that opts out of the blur. Compute the initial visibility
-    // from the footer's current viewport position so a hard reload anywhere
-    // on the page lands in the correct state, then keep it in sync as the
-    // user scrolls past the footer in either direction.
+    // disabled while either the hero section or the footer is on screen.
     const setVisible = (visible) =>
       gsap.to(blur, { autoAlpha: visible ? 1 : 0, duration: 0.3 });
 
-    const footerInView = footer.getBoundingClientRect().top < window.innerHeight;
-    gsap.set(blur, { autoAlpha: footerInView ? 0 : 1 });
+    const updateBlurState = () => {
+      const isAtTop = window.scrollY < 20;
+      const footerInView = footer.getBoundingClientRect().top < window.innerHeight;
+      const shouldBeVisible = !isAtTop && !footerInView;
+      setVisible(shouldBeVisible);
+    };
 
-    const trigger = ScrollTrigger.create({
+    updateBlurState();
+
+    const triggerHero = ScrollTrigger.create({
+      trigger: "#hero-section",
+      start: "bottom bottom",
+      onEnter: updateBlurState,
+      onLeaveBack: updateBlurState,
+    });
+
+    const triggerFooter = ScrollTrigger.create({
       trigger: footer,
       start: "top bottom",
       end: "bottom top",
-      onEnter: () => setVisible(false),
-      onEnterBack: () => setVisible(false),
-      onLeave: () => setVisible(false),
-      onLeaveBack: () => setVisible(true),
+      onEnter: updateBlurState,
+      onEnterBack: updateBlurState,
+      onLeave: updateBlurState,
+      onLeaveBack: updateBlurState,
     });
 
-    return () => trigger.kill();
+    return () => {
+      triggerHero.kill();
+      triggerFooter.kill();
+    };
   }, []);
 
   return (
@@ -82,13 +94,23 @@ export default function Home() {
         {/* </div> */}
         <div
           id="about"
-          className="h-auto md:h-[140vh] relative mt-16 md:mt-[10rem] flex flex-col md:block pb-16 md:pb-0 gap-8 md:gap-0"
+          className="h-auto relative mt-16 md:mt-[10rem] px-6 sm:px-12 lg:px-20 pb-24 z-10 flex flex-col gap-8 md:gap-12"
           ref={ref}
         >
           <Skiggle />
           <Header />
-          <FeaturedVideo refForward={ref} />
-          <SubHeader />
+          
+          <div className="w-full flex flex-col md:flex-row gap-12 lg:gap-16 items-start relative z-10">
+            {/* Left Column: Portrait Image */}
+            <div className="w-full md:w-[42%] lg:w-[38%] flex-shrink-0 flex justify-center md:justify-start">
+              <FeaturedVideo refForward={ref} />
+            </div>
+
+            {/* Right Column: Copy & Core Expertise */}
+            <div className="w-full md:flex-grow">
+              <SubHeader />
+            </div>
+          </div>
         </div>
 
         <Projects />

@@ -16,7 +16,7 @@ export const metadata = {
   title: 'Devender | Full-Stack Developer & Product Builder',
   description: 'Devender is a Full-Stack Web Developer & UI/UX-focused Product Builder specializing in premium websites, SaaS platforms, AI applications, and modern digital experiences.',
   icons: {
-    icon: '/icon.png',
+    icon: '/icon.jpg',
   },
 }
 
