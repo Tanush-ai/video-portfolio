@@ -258,7 +258,10 @@ const HeroSection = () => {
             </a>
 
             <a
-              href="#"
+              href="/Devender_Gopagoni_Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              download="Devender_Gopagoni_Resume.pdf"
               className="text-xs font-semibold hover:text-fg/80 flex items-center gap-1.5 pb-0.5 border-b border-current transition-all"
               style={{ fontFamily: "'Neue Montreal', 'Inter', sans-serif" }}
             >
