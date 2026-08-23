@@ -1,112 +1,76 @@
-# Elfekky Portfolio
+# Devender Gopagoni | Portfolio Website
 
-A stunning, interactive portfolio website for Elfekky featuring advanced animations, 3D elements, and smooth user experience.
+A premium, interactive developer portfolio website built using Next.js, Tailwind CSS, GSAP, and Framer Motion. Featuring physics-based smooth scrolling, responsive card structures, and a multi-language interactive logo loader.
 
-## 🌐 Live Demo
+## 🌐 Live Website
 
-Check out the live demo at [elfekky.site](https://elfekky.site)
-<img width="1896" height="948" alt="image" src="https://github.com/user-attachments/assets/31470f48-4acb-4d4b-a528-34cfd3b3ef7f" />
-<img width="1895" height="946" alt="image" src="https://github.com/user-attachments/assets/d6e4f7e9-671d-4d63-94c5-c4752dbd9c78" />
-<img width="1899" height="948" alt="image" src="https://github.com/user-attachments/assets/c4f134d2-9436-46b9-b662-cbda60c40626" />
-<img width="1864" height="928" alt="image" src="https://github.com/user-attachments/assets/250e09e4-c259-4d69-a8b3-2438179096d1" />
+Explore the live site: [devendhargopagoni.netlify.app](https://devendhargopagoni.netlify.app/)
 
-## 👨‍💻 Developer & Project Context
+---
 
-This project was developed by [Mtarif](https://mtarif.com) for a client. 
+## 📸 Screenshots
 
-For work inquiries or contact:
-- **Website**: [www.mtarif.com](https://www.mtarif.com)
-- **Contact for Work**: [www.mtarif.com](https://www.mtarif.com)
+### 1. Hero Section
+Features a high-definition background video with programmatic play/pause control, audio toggling, and an interactive 3-second centered logo loader cycling across Telugu, Hindi, and English.
+![Hero Section](./public/images/readme_hero.png)
+
+### 2. About Me Section (Digital Systems)
+Highlights core expertise using a clean responsive grid system alongside a high-resolution portrait sketch.
+![About Me Section](./public/images/readme_about.png)
+
+### 3. Contact & Footer Section
+Provides smooth-scroll action anchors to project sections and redirects users to active platforms.
+![Contact Section](./public/images/readme_contact.png)
+
+---
 
 ## ✨ Features
 
-- **Modern Next.js Architecture**: Built with Next.js 14 for optimal performance
-- **3D Elements**: Interactive 3D components using React Three Fiber and Spline
-- **Advanced Animations**: Smooth animations powered by GSAP and Framer Motion
-- **Smooth Scrolling**: Enhanced scrolling experience with Lenis
-- **Responsive Design**: Fully responsive across all devices
-- **Interactive Components**: 
-  - Hero section with dynamic content
-  - Featured work showcase
-  - Horizontal scrolling sections
-  - Contact form
-  - Particle effects
-  - Gradual blur effects
+- **Multi-Language Logo Loader**: A custom loading screen centering the sketch logo and cycling the text "DEVENDER PORTFOLIO" in Telugu (`దేవేందర్ పోర్ట్‌ఫోలియో`), Hindi (`देवेन्द्र पोर्टफोलियो`), and English (`DEVENDER PORTFOLIO`) with smooth Framer Motion fades.
+- **Background Video Hero**: High-definition video with floating play/pause controls, vertically centered left copy block, and customized diagonal/vertical action icons.
+- **Responsive Layout Architecture**: Re-engineered overlaps to display clean grid layouts on mobile and desktop viewports.
+- **Lenis Smooth Scroll on Mobile**: Fully enabled smooth physics inertia scrolling on touch devices (`syncTouch` and `smoothTouch`).
+- **Mobile Performance Optimizations**: Auto-scaling sphere particle vertex density on mobile screens (reducing overhead from 4,096 to 1,024 points) to keep scrolling frame rates high.
+- **Uncropped Selected Projects**: Clear list row layouts featuring contain-fit screenshot thumbnails with dynamic hover offsets.
+
+---
 
 ## 🛠️ Tech Stack
 
 - **Framework**: Next.js 14
-- **3D Graphics**: React Three Fiber, React Three Drei, Spline
-- **Animations**: GSAP, Framer Motion, React Spring
 - **Styling**: Tailwind CSS
-- **Utilities**: Lenis (smooth scrolling), Parallax.js
+- **Animations**: GSAP, Framer Motion, React Spring
+- **3D Renderers**: React Three Fiber, React Three Drei, Three.js
+- **Scroll Engine**: Lenis (Smooth Scroll)
 
-## 📦 Installation
+---
+
+## 📦 Local Installation
 
 1. Clone the repository:
-```bash
-git clone https://github.com/tefooh/elfekky-portfolio.git
-cd elfekky-portfolio
-```
+   ```bash
+   git clone <repository-url>
+   cd portfolio_day7
+   ```
 
 2. Install dependencies:
-```bash
-npm install
-```
+   ```bash
+   npm install
+   ```
 
 3. Run the development server:
-```bash
-npm run dev
-```
+   ```bash
+   npm run dev
+   ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
 
 ## 🚀 Build for Production
 
+To compile and verify page routes for static delivery:
 ```bash
 npm run build
 npm start
 ```
-
-## 📁 Project Structure
-
-```
-elfekky-portfolio/
-├── app/
-│   ├── about/
-│   ├── globals.css
-│   ├── layout.js
-│   └── page.js
-├── components/
-│   ├── About/
-│   ├── Character/
-│   ├── Contact/
-│   ├── Featured/
-│   ├── FeaturedWork/
-│   ├── GradualBlur/
-│   ├── HeroSection/
-│   ├── HorizontalScroll/
-│   ├── Navbar/
-│   ├── Projects/
-│   ├── SiteFooter/
-│   └── SmoothScroll/
-├── public/
-└── package.json
-```
-
-## 🎨 Key Components
-
-- **HeroSection**: Main landing section with dynamic animations
-- **FeaturedWork**: Showcase of featured projects and work
-- **HorizontalScroll**: Smooth horizontal scrolling sections
-- **Contact**: Interactive contact form
-- **GradualBlur**: Advanced blur effects for visual depth
-- **Character**: 3D character components with React Three Fiber
-
-## 📄 License & Credits
-
-This project was developed by [Mtarif](https://mtarif.com) for a client and is proprietary.
-
-- **Developer**: [Mtarif](https://mtarif.com) (Contact for work at [www.mtarif.com](https://www.mtarif.com))
-- **Client / Owner**: Elfekky
-- **Live Site**: [elfekky.site](https://elfekky.site)
