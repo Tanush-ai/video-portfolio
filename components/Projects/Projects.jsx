@@ -110,7 +110,7 @@ const ArrowIcon = () => (
   </svg>
 );
 
-const ProjectCard = ({ item, index }) => {
+const Row = ({ item, index }) => {
   const hasLink = Boolean(item.href);
   const Wrapper = hasLink ? "a" : "div";
   const wrapperProps = hasLink
@@ -118,113 +118,30 @@ const ProjectCard = ({ item, index }) => {
     : {};
 
   return (
-    <div className="pj-row w-full flex">
+    <li className="pj-row">
       <Wrapper
-        className="flex flex-col w-full bg-fg/[0.03] dark:bg-white/[0.02] border border-fg/10 dark:border-white/5 rounded-3xl p-5 hover:bg-fg/[0.06] dark:hover:bg-white/[0.04] hover:border-fg/20 dark:hover:border-white/10 transition-all duration-300 group cursor-pointer"
+        className={`pj-link${hasLink ? "" : " pj-link--static"}`}
         {...wrapperProps}
       >
-        {/* 100% Image Layout Container (No crop) */}
+        <span className="pj-num">{String(index + 1).padStart(2, "0")}</span>
         {item.image && (
-          <div className="w-full aspect-[16/10] bg-fg/[0.02] dark:bg-white/[0.01] border border-fg/5 dark:border-white/5 rounded-2xl overflow-hidden mb-5 flex items-center justify-center p-2 relative">
-            <img
-              src={item.image}
-              alt={item.name}
-              className="w-full h-full object-contain rounded-xl group-hover:scale-[1.02] transition-transform duration-500"
-            />
-          </div>
+          <img
+            src={item.image}
+            alt={item.name}
+            className="w-20 h-14 sm:w-28 sm:h-18 object-contain bg-white/5 rounded-xl border border-white/10 shrink-0"
+          />
         )}
-
-        {/* Meta details */}
-        <div className="flex flex-col w-full flex-grow">
-          <div className="flex items-center justify-between w-full">
-            <span className="text-[10px] tracking-widest text-fg-muted font-semibold uppercase">
-              Project {String(index + 1).padStart(2, "0")}
-            </span>
-            <span className="px-2.5 py-0.5 bg-fg/10 dark:bg-white/10 text-fg rounded-full text-[10px] font-bold uppercase tracking-wider">
-              {item.kind}
-            </span>
-          </div>
-
-          <h3 className="text-xl lg:text-2xl font-bold uppercase tracking-tight text-fg mt-3 group-hover:text-fg/80 transition-colors">
-            {item.name}
-          </h3>
-
-          {item.role && (
-            <span className="text-[11px] font-bold tracking-wider text-fg-muted/70 uppercase mt-1">
-              {item.role}
-            </span>
-          )}
-
-          {item.note && (
-            <p className="text-xs sm:text-sm text-fg-muted leading-relaxed mt-4 flex-grow">
-              {item.note}
-            </p>
-          )}
-
-          <div className="flex items-center gap-1.5 text-[11px] font-bold tracking-widest uppercase mt-6 text-fg group-hover:translate-x-1 transition-transform duration-300">
-            <span>{hasLink ? "View Project" : "Learn More"}</span>
-            <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-none stroke-current" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"/>
-              <polyline points="12 5 19 12 12 19"/>
-            </svg>
-          </div>
+        <div className="pj-meta">
+          <span className="pj-name">{item.name}</span>
+          {item.role && <span className="pj-role">{item.role}</span>}
+          {item.note && <span className="pj-note">{item.note}</span>}
         </div>
+        <span className="pj-kind">{item.kind}</span>
+        <span className="pj-arrow" aria-hidden="true">
+          {hasLink ? <ArrowIcon /> : <span className="pj-dot">•</span>}
+        </span>
       </Wrapper>
-    </div>
-  );
-};
-
-const VentureCard = ({ item, index }) => {
-  const hasLink = Boolean(item.href);
-  const Wrapper = hasLink ? "a" : "div";
-  const wrapperProps = hasLink
-    ? { href: item.href, target: "_blank", rel: "noreferrer" }
-    : {};
-
-  return (
-    <div className="pj-row w-full flex">
-      <Wrapper
-        className="flex flex-col w-full bg-fg/[0.02] dark:bg-white/[0.01] border border-fg/5 dark:border-white/5 rounded-3xl p-6 hover:bg-fg/[0.04] dark:hover:bg-white/[0.03] hover:border-fg/10 dark:hover:border-white/10 transition-all duration-300 group cursor-pointer justify-between"
-        {...wrapperProps}
-      >
-        <div className="flex flex-col w-full">
-          <div className="flex items-center justify-between w-full">
-            <span className="text-[10px] tracking-widest text-fg-muted font-semibold uppercase">
-              Service {String(index + 1).padStart(2, "0")}
-            </span>
-            <span className="px-2.5 py-0.5 bg-fg/5 dark:bg-white/5 text-fg-muted rounded-full text-[10px] font-bold uppercase tracking-wider">
-              {item.kind}
-            </span>
-          </div>
-
-          <h3 className="text-lg lg:text-xl font-bold uppercase tracking-tight text-fg mt-4 group-hover:text-fg/80 transition-colors">
-            {item.name}
-          </h3>
-
-          {item.role && (
-            <span className="text-[10px] font-bold tracking-wider text-fg-muted/70 uppercase mt-1">
-              {item.role}
-            </span>
-          )}
-
-          {item.note && (
-            <p className="text-xs sm:text-sm text-fg-muted leading-relaxed mt-4">
-              {item.note}
-            </p>
-          )}
-        </div>
-
-        {hasLink && (
-          <div className="flex items-center gap-1.5 text-[10px] font-bold tracking-widest uppercase mt-6 text-fg group-hover:translate-x-1 transition-transform duration-300">
-            <span>Learn More</span>
-            <svg viewBox="0 0 24 24" className="w-3 h-3 fill-none stroke-current" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"/>
-              <polyline points="12 5 19 12 12 19"/>
-            </svg>
-          </div>
-        )}
-      </Wrapper>
-    </div>
+    </li>
   );
 };
 
@@ -275,22 +192,22 @@ const Projects = () => {
         <h2 className="pj-title">selected work</h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mt-12 w-full">
+      <ul className="pj-list">
         {PROJECTS.map((p, i) => (
-          <ProjectCard key={p.name} item={p} index={i} />
+          <Row key={p.name} item={p} index={i} />
         ))}
-      </div>
+      </ul>
 
       <div id="ventures" className="pj-head pj-head--secondary">
         <span className="pj-label">WHAT I BUILD</span>
         <h2 className="pj-title">products &amp; solutions</h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mt-12 w-full">
+      <ul className="pj-list">
         {VENTURES.map((v, i) => (
-          <VentureCard key={v.name} item={v} index={i} />
+          <Row key={v.name} item={v} index={i} />
         ))}
-      </div>
+      </ul>
     </section>
   );
 };
