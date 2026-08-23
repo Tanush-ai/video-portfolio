@@ -11,7 +11,7 @@ const HeroSection = () => {
   const loaderRef = useRef(null);
   const [loaderDone, setLoaderDone] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentText, setCurrentText] = useState("దేవేందర్");
+  const [currentText, setCurrentText] = useState("దేవేందర్ పోర్ట్‌ఫోలియో");
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -36,7 +36,7 @@ const HeroSection = () => {
         duration: 1.1,
         ease: "power3.out",
       },
-      "start+=2.0"
+      "start+=3.0"
     );
 
     // Background video reveal (fade & scale down to 1)
@@ -48,12 +48,12 @@ const HeroSection = () => {
         duration: 1.2,
         ease: "power2.out",
       },
-      "start+=2.2"
+      "start+=3.2"
     );
 
     // Timeout-based interactive name transitions in different languages
-    const t1 = setTimeout(() => setCurrentText("देवेन्द्र"), 650);
-    const t2 = setTimeout(() => setCurrentText("DEVENDER"), 1300);
+    const t1 = setTimeout(() => setCurrentText("देवेन्द्र पोर्टफोलियो"), 1000);
+    const t2 = setTimeout(() => setCurrentText("DEVENDER PORTFOLIO"), 2000);
 
     return () => {
       tl.kill();
