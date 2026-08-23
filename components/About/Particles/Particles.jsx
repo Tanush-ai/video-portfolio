@@ -43,7 +43,8 @@ const Particles = () => {
 const Stars = () => {
   const ref = useRef();
   const starsGeometry = new THREE.BufferGeometry();
-  const initialGeometry = new THREE.SphereGeometry(2, 64, 64);
+  const isMobileDevice = typeof window !== "undefined" && window.innerWidth < 768;
+  const initialGeometry = new THREE.SphereGeometry(2, isMobileDevice ? 32 : 64, isMobileDevice ? 32 : 64);
   const scrollObject = useScroll();
   let  finalGeometry = undefined;
   if (typeof window !== "undefined") {
