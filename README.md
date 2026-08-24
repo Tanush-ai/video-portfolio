@@ -4,7 +4,7 @@ A premium, interactive developer portfolio website built using Next.js, Tailwind
 
 ## 🌐 Live Website
 
-Explore the live site: [devendhargopagoni.netlify.app](https://devendhargopagoni.netlify.app/)
+Explore the live site: https://devender-video-portfolio.vercel.app/
 
 ---
 
