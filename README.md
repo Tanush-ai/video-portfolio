@@ -1,16 +1,3 @@
-# Tanush V | Portfolio Website
-
-A premium, interactive developer portfolio website built using Next.js 14, Tailwind CSS, GSAP, and Framer Motion for **Tanush V**, MLOps Engineer & AI Systems Developer. Featuring physics-based smooth scrolling, responsive card structures, and a multi-language interactive logo loader.
-
-## 🔗 Connect & Links
-
-- **GitHub**: [https://github.com/Tanush-ai](https://github.com/Tanush-ai)
-- **LinkedIn**: [https://www.linkedin.com/in/tanush-v](https://www.linkedin.com/in/tanush-v)
-- **Email**: [tanushvelgpudi123@gmail.com](mailto:tanushvelgpudi123@gmail.com)
-- **Instagram**: [https://www.instagram.com/er.tanush](https://www.instagram.com/er.tanush)
-
----
-
 # Tanush V | Developer Portfolio
 
 An interactive, single-page portfolio for **Tanush V**, an MLOps Engineer and AI Systems Developer. The site presents Tanush's work, technical focus, and contact information through a motion-led interface built around a full-screen video hero.
