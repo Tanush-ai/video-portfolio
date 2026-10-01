@@ -1,28 +1,28 @@
+/**
+ * @file components/Navbar/LetsTalk.jsx
+ * Why this code exists:
+ * Renders an interactive call-to-action button in the desktop navigation header
+ * with spring-animated arrow indicators on hover.
+ */
+
 import React from "react";
 import { useSpring, animated } from "@react-spring/web";
 
-// Same address used in `Contact` and `SiteFooter`. If any of these change,
-// keep all three places in sync.
-const EMAIL = "devendhargopagoni@gmail.com";
-
-// "LET'S TALK" was previously a non-interactive div. It now opens the user's
-// mail client straight to the real contact email — which is also wired up
-// in the contact section and the footer.
+/**
+ * LetsTalk component with physics-based hover state micro-animations.
+ * 
+ * Tricky logic:
+ * Uses dual react-spring APIs to cross-fade arrow and bullet icons simultaneously
+ * while translating text position smoothly on mouse enter/leave.
+ * 
+ * TODO: Add magnetic cursor physics effect on mouse move.
+ * 
+ * @returns {React.ReactElement} Animated CTA anchor button
+ */
 const LetsTalk = () => {
-  const [springs, api] = useSpring(() => ({
-    from: { x: 0 },
-    x: -10,
-  }));
-
-  const [opacitySprings, opacityApi] = useSpring(() => ({
-    opacity: 1,
-    x: 0,
-  }));
-
-  const [opacitySpringsReverse, opacityApiReverse] = useSpring(() => ({
-    opacity: 0,
-    x: -10,
-  }));
+  const [springs, api] = useSpring(() => ({ from: { x: 0 }, x: -10 }));
+  const [opacitySprings, opacityApi] = useSpring(() => ({ opacity: 1, x: 0 }));
+  const [opacitySpringsReverse, opacityApiReverse] = useSpring(() => ({ opacity: 0, x: -10 }));
 
   return (
     <a

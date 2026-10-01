@@ -1,12 +1,29 @@
-"use client";
+/**
+ * @file components/HorizontalScroll/HorizontalScroll.jsx
+ * Why this code exists:
+ * Provides a pinned horizontal marquee scroll section with GSAP ScrollTrigger character-by-character
+ * 3D rotation and translation animation as the page is scrolled vertically.
+ */
 
+"use client";
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const TEXT = "I Transform Ideas into Production-Ready Applications.";
 
-const HorizontalScroll = () => {
+/**
+ * HorizontalScroll component creating a full-width pinned container animation.
+ * 
+ * Tricky logic:
+ * Pins the section container in place (`pin: stickyRef.current`) while translating the underlying text
+ * container horizontally by -110% using a containerAnimation linked ScrollTrigger on individual character spans.
+ * 
+ * TODO: Adjust xPercent scroll distance calculation based on text string length dynamically.
+ * 
+ * @returns {React.ReactElement} Pinned horizontal marquee section
+ */
+export default function HorizontalScroll() {
   const wrapperRef = useRef(null);
   const stickyRef = useRef(null);
   const textRef = useRef(null);
@@ -14,78 +31,37 @@ const HorizontalScroll = () => {
   useEffect(() => {
     if (typeof window === "undefined") return;
     gsap.registerPlugin(ScrollTrigger);
-
-    const wrapper = wrapperRef.current;
-    const sticky = stickyRef.current;
-    const text = textRef.current;
-    if (!wrapper || !sticky || !text) return;
-
     const ctx = gsap.context(() => {
-      const chars = text.querySelectorAll(".hs-char");
-
-      // Pin the section once it hits the top of the viewport, then drive the
-      // horizontal text animation entirely from scroll. The pin is held for
-      // the full distance the text needs to travel — i.e. however many extra
-      // viewport heights it takes to scroll the heading from off-screen right
-      // to fully off-screen left — so the animation never gets cut short by
-      // the next section / footer arriving early. The pin only releases once
-      // the animation has fully played, after which scrolling continues on
-      // to the next section. Using ScrollTrigger.pin instead of
-      // `position:sticky` because the parent wrapper has `overflow-x: hidden`,
-      // which breaks sticky behaviour in some browsers.
-      const getPinDistance = () => {
-        const textWidth = text.scrollWidth;
-        const viewport = window.innerWidth;
-        // Distance the text must translate left so its right edge clears the
-        // viewport. Kept tight (no extra multiplier) so the pin releases
-        // immediately after the text exits — otherwise the user keeps
-        // scrolling on an empty background before the next section appears.
-        const travel = Math.max(textWidth - viewport * 0.1, viewport);
-        return travel;
-      };
-
-      const scrollTween = gsap.to(text, {
-        xPercent: -110,
-        ease: "none",
+      const chars = textRef.current.querySelectorAll(".hs-char");
+      const scrollTween = gsap.to(textRef.current, {
+        xPercent: -110, ease: "none",
         scrollTrigger: {
-          trigger: sticky,
-          start: "top top",
-          end: () => "+=" + getPinDistance(),
-          scrub: 0.5,
-          pin: sticky,
-          pinSpacing: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
+          trigger: stickyRef.current, start: "top top",
+          end: () => "+=" + Math.max(textRef.current.scrollWidth - window.innerWidth * 0.1, window.innerWidth),
+          scrub: 0.5, pin: stickyRef.current, pinSpacing: true, anticipatePin: 1, invalidateOnRefresh: true,
         },
       });
-
       chars.forEach((char) => {
         gsap.from(char, {
           yPercent: gsap.utils.random(-200, 200),
           rotation: gsap.utils.random(-20, 20),
           ease: "back.out(1.2)",
-          scrollTrigger: {
-            trigger: char,
-            containerAnimation: scrollTween,
-            start: "left 100%",
-            end: "left 30%",
-            scrub: 1,
-          },
+          scrollTrigger: { trigger: char, containerAnimation: scrollTween, start: "left 100%", end: "left 30%", scrub: 1 },
         });
       });
-    }, wrapper);
-
+    }, wrapperRef.current);
     return () => ctx.revert();
   }, []);
 
-  // Split text into words and chars while preserving spaces
+  /**
+   * Splits input text into accessible character and word spans for GSAP target selector mapping.
+   * @returns {React.ReactNode[]} Array of formatted word elements
+   */
   const renderText = () => {
     return TEXT.split(" ").map((word, wi, arr) => (
       <span key={wi} className="hs-word" style={{ display: "inline-block", whiteSpace: "nowrap" }}>
         {word.split("").map((char, ci) => (
-          <span key={ci} className="hs-char" style={{ display: "inline-block" }}>
-            {char}
-          </span>
+          <span key={ci} className="hs-char" style={{ display: "inline-block" }}>{char}</span>
         ))}
         {wi < arr.length - 1 && <span className="hs-char" style={{ display: "inline-block" }}>&nbsp;</span>}
       </span>
@@ -95,12 +71,8 @@ const HorizontalScroll = () => {
   return (
     <section className="Horizontal" ref={wrapperRef}>
       <div className="hs-sticky" ref={stickyRef}>
-        <h3 className="Horizontal__text heading-xl" ref={textRef}>
-          {renderText()}
-        </h3>
+        <h3 className="Horizontal__text heading-xl" ref={textRef}>{renderText()}</h3>
       </div>
     </section>
   );
-};
-
-export default HorizontalScroll;
+}

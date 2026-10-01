@@ -1,45 +1,44 @@
+/**
+ * @file components/Featured/FeaturedVideo.jsx
+ * Why this code exists:
+ * Displays the hero portrait image with Framer Motion scroll scale effects,
+ * serving as a visual focal point in the About/Featured section.
+ */
+
 import React, { useRef, useState } from "react";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import Image from "next/image";
-import featuredImage from "../../d7e3f658-ad2c-4625-a3eb-165e8d54403c.jpg";
 
-const FeaturedVideo = ({refForward, ...props }) => {
+/**
+ * FeaturedVideo / Portrait card component animated based on viewport scroll progress.
+ * 
+ * Tricky logic:
+ * Listens to parent forward ref scroll progress using useMotionValueEvent to scale up the card
+ * when progress crosses the 50% scroll threshold.
+ * 
+ * TODO: Support optional video thumbnail overlay on hover.
+ * 
+ * @param {Object} props Component properties
+ * @param {React.RefObject} props.refForward Parent section ref for scroll target tracking
+ * @returns {React.ReactElement} Motion container card element
+ */
+export default function FeaturedVideo({ refForward, ...props }) {
   const ref = useRef(null);
-
-  const variants = {
-    initial: { scale: 1, x: 0, y: 0 },
-    animate: { scale: 1.08, x: 0, y: 0 },
-  };
-
-  const { scrollYProgress } = useScroll({
-    target: refForward,
-    layoutEffect: false,
-  });
-
+  const { scrollYProgress } = useScroll({ target: refForward, layoutEffect: false });
   const [progress, setProgress] = useState(0);
-  useMotionValueEvent(scrollYProgress, "change", (value) => {
-    setProgress(value);
-  });
+
+  useMotionValueEvent(scrollYProgress, "change", (val) => setProgress(val));
 
   return (
     <motion.div
       ref={ref}
-      variants={variants}
+      variants={{ initial: { scale: 1 }, animate: { scale: 1.08 } }}
       initial="initial"
       animate={progress > 0.5 ? "animate" : "initial"}
       className="relative w-full aspect-[3/4] md:aspect-[856/1024] overflow-hidden rounded-3xl shadow-md z-30"
       {...props}
     >
-      <Image
-        src={featuredImage}
-        alt="Featured portrait"
-        fill
-        priority
-        sizes="(max-width: 768px) 80vw, 40vw"
-        className="object-cover"
-      />
+      <Image src="/avatar-logo.jpg" alt="Tanush V - Featured portrait" fill priority sizes="(max-width: 768px) 80vw, 40vw" className="object-cover object-top" />
     </motion.div>
   );
-};
-
-export default FeaturedVideo;
+}

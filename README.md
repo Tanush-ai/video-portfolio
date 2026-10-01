@@ -1,10 +1,13 @@
-# Devender Gopagoni | Portfolio Website
+# Tanush V | Portfolio Website
 
-A premium, interactive developer portfolio website built using Next.js, Tailwind CSS, GSAP, and Framer Motion. Featuring physics-based smooth scrolling, responsive card structures, and a multi-language interactive logo loader.
+A premium, interactive developer portfolio website built using Next.js 14, Tailwind CSS, GSAP, and Framer Motion for **Tanush V**, MLOps Engineer & AI Systems Developer. Featuring physics-based smooth scrolling, responsive card structures, and a multi-language interactive logo loader.
 
-## 🌐 Live Website
+## 🔗 Connect & Links
 
-Explore the live site: https://devender-video-portfolio.vercel.app/
+- **GitHub**: [https://github.com/Tanush-ai](https://github.com/Tanush-ai)
+- **LinkedIn**: [https://www.linkedin.com/in/tanush-v](https://www.linkedin.com/in/tanush-v)
+- **Email**: [tanushvelgpudi123@gmail.com](mailto:tanushvelgpudi123@gmail.com)
+- **Instagram**: [https://www.instagram.com/er.tanush](https://www.instagram.com/er.tanush)
 
 ---
 
@@ -15,18 +18,18 @@ Features a high-definition background video with programmatic play/pause control
 ![Hero Section](./public/images/readme_hero.png)
 
 ### 2. About Me Section (Digital Systems)
-Highlights core expertise using a clean responsive grid system alongside a high-resolution portrait sketch.
+Highlights core expertise using a clean responsive grid system alongside a high-resolution portrait.
 ![About Me Section](./public/images/readme_about.png)
 
 ### 3. Contact & Footer Section
-Provides smooth-scroll action anchors to project sections and redirects users to active platforms.
+Provides smooth-scroll action anchors to project sections and direct contact links.
 ![Contact Section](./public/images/readme_contact.png)
 
 ---
 
 ## ✨ Features
 
-- **Multi-Language Logo Loader**: A custom loading screen centering the sketch logo and cycling the text "DEVENDER PORTFOLIO" in Telugu (`దేవేందర్ పోర్ట్‌ఫోలియో`), Hindi (`देवेन्द्र पोर्टफोलियो`), and English (`DEVENDER PORTFOLIO`) with smooth Framer Motion fades.
+- **Multi-Language Logo Loader**: A custom loading screen centering the avatar logo and cycling the text "TANUSH V PORTFOLIO" in Telugu (`తనుష్ పోర్ట్ఫోలియో`), Hindi (`तनुष पोर्टफोलियो`), and English (`TANUSH V PORTFOLIO`) with smooth Framer Motion fades.
 - **Background Video Hero**: High-definition video with floating play/pause controls, vertically centered left copy block, and customized diagonal/vertical action icons.
 - **Responsive Layout Architecture**: Re-engineered overlaps to display clean grid layouts on mobile and desktop viewports.
 - **Lenis Smooth Scroll on Mobile**: Fully enabled smooth physics inertia scrolling on touch devices (`syncTouch` and `smoothTouch`).

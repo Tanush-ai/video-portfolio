@@ -1,30 +1,25 @@
-import { Inter } from 'next/font/google'
-import './globals.css'
+/**
+ * @file app/layout.js
+ * Why this code exists:
+ * Root layout component configuring Google Inter font variable, site SEO metadata,
+ * favicons, and anti-FOUC theme bootstrapping script.
+ */
 
-// Inter is the single typeface used everywhere on the site. Loading it through
-// next/font exposes a CSS variable (`--font-inter`) we can reference from any
-// global CSS rule, while `inter.className` applies it as the default font on
-// the body so every component inherits it automatically.
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  weight: ['400', '500', '600', '700'],
-  display: 'swap',
-})
+import { Inter } from 'next/font/google';
+import './globals.css';
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter', weight: ['400', '500', '600', '700'], display: 'swap' });
 
 export const metadata = {
-  title: 'Devender | Full-Stack Developer & Product Builder',
-  description: 'Devender is a Full-Stack Web Developer & UI/UX-focused Product Builder specializing in premium websites, SaaS platforms, AI applications, and modern digital experiences.',
-  icons: {
-    icon: '/icon.jpg',
-  },
-}
+  title: 'Tanush V | MLOps Engineer & AI Systems Developer',
+  description: 'Tanush V is an MLOps Engineer & AI Systems Developer specializing in scalable AI infrastructure, machine learning workflows, and intelligent applications.',
+  icons: { icon: '/icon.jpg' }
+};
 
-// Tiny script that runs synchronously before the body paints. It reads the
-// theme the user previously picked from localStorage and applies the
-// corresponding `data-theme` attribute on the <html> element. Without this,
-// the page would flash the default light theme for one frame on every reload
-// when the user is using dark mode. Default is light when nothing is saved.
+/**
+ * Inline IIFE script string executed before initial DOM render to prevent white flash / FOUC
+ * by immediately setting data-theme from localStorage.
+ */
 const themeBootstrap = `
 (function () {
   try {
@@ -37,14 +32,27 @@ const themeBootstrap = `
 })();
 `;
 
+/**
+ * RootLayout component wrapping all Next.js App Router pages.
+ * 
+ * Tricky logic:
+ * Injects raw themeBootstrap script synchronously into <head> via dangerouslySetInnerHTML
+ * to guarantee theme data-theme is assigned prior to paint.
+ * 
+ * TODO: Add OpenGraph meta image tags for social sharing previews.
+ * 
+ * @param {Object} props Component properties
+ * @param {React.ReactNode} props.children Page children content
+ * @returns {React.ReactElement} Root HTML wrapper structure
+ */
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={inter.variable} data-theme="light">
+    <html lang="en" className={inter.variable} data-theme="dark">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <script dangerouslySetInnerHTML={{ __html: themeBootstrap }} />
       </head>
       <body className={inter.className}>{children}</body>
     </html>
-  )
+  );
 }

@@ -1,14 +1,14 @@
+/**
+ * @file app/page.js
+ * Why this code exists:
+ * Main landing page component bootstrapping Lenis smooth scrolling, fixed navigation,
+ * hero video section, about bio cards, project showcase lists, horizontal marquee, contact CTA,
+ * footer, and dynamic gradual blur backdrop overlays.
+ */
+
 "use client";
 import { Suspense, useRef, useEffect } from "react";
-import Footer from "@/components/Character/Experience";
-import FeaturedVideo from "@/components/Featured/FeaturedVideo";
-import Header from "@/components/Featured/Header";
-import Skiggle from "@/components/Featured/Skiggle";
-import SubHeader from "@/components/Featured/SubHeader";
-import Description from "@/components/Navbar/Description";
 import Navbar from "@/components/Navbar/Navbar";
-import ScrollText from "@/components/Navbar/ScrollText";
-import FeaturedWork from "@/components/FeaturedWork/FeaturedWork";
 import HeroSection from "@/components/HeroSection/HeroSection";
 import SmoothScroll from "@/components/SmoothScroll";
 import GradualBlur from "@/components/GradualBlur/GradualBlur";
@@ -16,149 +16,82 @@ import HorizontalScroll from "@/components/HorizontalScroll/HorizontalScroll";
 import Projects from "@/components/Projects/Projects";
 import Contact from "@/components/Contact/Contact";
 import SiteFooter from "@/components/SiteFooter/SiteFooter";
+import Skiggle from "@/components/Featured/Skiggle";
+import Header from "@/components/Featured/Header";
+import FeaturedVideo from "@/components/Featured/FeaturedVideo";
+import SubHeader from "@/components/Featured/SubHeader";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+/**
+ * Home component assembling full single-page portfolio presentation.
+ * 
+ * Tricky logic:
+ * Controls fixed bottom gradual blur overlay visibility dynamically by monitoring page Y scroll position
+ * and suppressing blur when footer enters viewport to avoid obscuring copyright text.
+ * 
+ * TODO: Integrate analytics tracking events on project link clicks.
+ * 
+ * @returns {React.ReactElement} Portfolio main page component
+ */
 export default function Home() {
   const ref = useRef(null);
   const blurRef = useRef(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-
-    console.clear();
-    console.log(
-      "%cCREATED BY DEVENDER",
-      "background: #D9E6FF; color: #0f172a; font-size: 16px; font-weight: 800; padding: 10px 16px; border-radius: 10px; letter-spacing: 2px;"
-    );
-  }, []);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
     gsap.registerPlugin(ScrollTrigger);
-
     const blur = blurRef.current;
     const footer = document.getElementById("main-footer");
     if (!blur || !footer) return;
 
-    // The GradualBlur effect should be visible across the whole site, but
-    // disabled while either the hero section or the footer is on screen.
-    const setVisible = (visible) =>
-      gsap.to(blur, { autoAlpha: visible ? 1 : 0, duration: 0.3 });
+    /**
+     * Toggles gradual blur element visibility with GSAP autoAlpha transition.
+     * @param {boolean} visible - Target visibility state flag
+     */
+    const setVisible = (visible) => gsap.to(blur, { autoAlpha: visible ? 1 : 0, duration: 0.3 });
 
+    /**
+     * Evaluates scroll bounds to show/hide bottom blur overlay.
+     */
     const updateBlurState = () => {
       const isAtTop = window.scrollY < 20;
       const footerInView = footer.getBoundingClientRect().top < window.innerHeight;
-      const shouldBeVisible = !isAtTop && !footerInView;
-      setVisible(shouldBeVisible);
+      setVisible(!isAtTop && !footerInView);
     };
 
     updateBlurState();
-
-    const triggerHero = ScrollTrigger.create({
-      trigger: "#hero-section",
-      start: "bottom bottom",
-      onEnter: updateBlurState,
-      onLeaveBack: updateBlurState,
-    });
-
-    const triggerFooter = ScrollTrigger.create({
-      trigger: footer,
-      start: "top bottom",
-      end: "bottom top",
-      onEnter: updateBlurState,
-      onEnterBack: updateBlurState,
-      onLeave: updateBlurState,
-      onLeaveBack: updateBlurState,
-    });
-
-    return () => {
-      triggerHero.kill();
-      triggerFooter.kill();
-    };
+    window.addEventListener("scroll", updateBlurState);
+    return () => window.removeEventListener("scroll", updateBlurState);
   }, []);
 
   return (
     <SmoothScroll>
-    <Suspense
-      fallback={
-        <div className="w-screen bg-black h-screen text-white text-4xl md:text-7xl lg:text-9xl flex items-center justify-center">
-          Loading...
-        </div>
-      }
-    >
-      <div className="bg-bg text-fg h-auto w-screen overflow-x-hidden">
-        <Navbar />
-
-        <HeroSection />
-        {/* </div> */}
-        <div
-          id="about"
-          className="h-auto relative mt-16 md:mt-[10rem] px-6 sm:px-12 lg:px-20 pb-24 z-10 flex flex-col gap-8 md:gap-12"
-          ref={ref}
-        >
-          <Skiggle />
-          <Header />
-          
-          <div className="w-full flex flex-col md:flex-row gap-12 lg:gap-16 items-start relative z-10">
-            {/* Left Column: Portrait Image */}
-            <div className="w-full md:w-[42%] lg:w-[38%] flex-shrink-0 flex justify-center md:justify-start">
-              <FeaturedVideo refForward={ref} />
-            </div>
-
-            {/* Right Column: Copy & Core Expertise */}
-            <div className="w-full md:flex-grow">
-              <SubHeader />
+      <Suspense fallback={<div className="w-screen bg-black h-screen text-white text-3xl flex items-center justify-center">Loading...</div>}>
+        <div className="bg-bg text-fg h-auto w-screen overflow-x-hidden">
+          <Navbar />
+          <HeroSection />
+          <div id="about" className="h-auto relative mt-16 md:mt-[10rem] px-6 sm:px-12 lg:px-20 pb-24 z-10 flex flex-col gap-8 md:gap-12 animate-fade-in" ref={ref}>
+            <Skiggle />
+            <Header />
+            <div className="w-full flex flex-col md:flex-row gap-12 lg:gap-16 items-start relative z-10 mt-6 md:mt-12">
+              <div className="w-full md:w-[42%] lg:w-[38%] flex-shrink-0 flex justify-center md:justify-start">
+                <FeaturedVideo refForward={ref} />
+              </div>
+              <div className="w-full md:flex-grow">
+                <SubHeader />
+              </div>
             </div>
           </div>
-        </div>
-
-        <Projects />
-
-        <HorizontalScroll />
-        <Contact />
-        <SiteFooter />
-
-        {/* GradualBlur — hidden when footer is in view */}
-        <div
-          ref={blurRef}
-          aria-hidden="true"
-          style={{
-            position: "fixed",
-            inset: 0,
-            pointerEvents: "none",
-            zIndex: 99999,
-          }}
-        >
-          <GradualBlur
-            target="parent"
-            position="bottom"
-            height="6rem"
-            strength={2}
-            divCount={6}
-            curve="bezier"
-            exponential={false}
-            opacity={0.9}
-            zIndex={1}
-          />
-        </div>
-        {/* <FeaturedWork />
-        <Connection className="" />
-        <div className="mt-80 w-full h-screen relative">
-          <Experience className="w-full h-full rounded-3xl" />
-        </div> */}
-        {/* <div className="bg-brblue flex items-center justify-center w-full h-screen font-extrabold text-9xl"> this is the footer  </div> */}
-        {/* <div className="relative">
-          <div className="absolute text-9xl font-bold text-center w-full h-full top-80">
-            HIRE       ME
+          <Projects />
+          <HorizontalScroll />
+          <Contact />
+          <SiteFooter />
+          <div ref={blurRef} style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 99999 }}>
+            <GradualBlur position="bottom" height="6rem" strength={2} divCount={6} curve="bezier" opacity={0.9} />
           </div>
-          <Footer />
-          <div className="absolute text-3xl font-bold text-center w-full h-full top-[40rem]">
-            made by mtarif
-          </div>
-        </div> */}
-      </div>
-    </Suspense>
+        </div>
+      </Suspense>
     </SmoothScroll>
   );
 }
