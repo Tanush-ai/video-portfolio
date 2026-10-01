@@ -11,69 +11,88 @@ A premium, interactive developer portfolio website built using Next.js 14, Tailw
 
 ---
 
-## 📸 Screenshots
+# Tanush V | Developer Portfolio
 
-### 1. Hero Section
-Features a high-definition background video with programmatic play/pause control, audio toggling, and an interactive 3-second centered logo loader cycling across Telugu, Hindi, and English.
-![Hero Section](./public/images/readme_hero.png)
+An interactive, single-page portfolio for **Tanush V**, an MLOps Engineer and AI Systems Developer. The site presents Tanush's work, technical focus, and contact information through a motion-led interface built around a full-screen video hero.
 
-### 2. About Me Section (Digital Systems)
-Highlights core expertise using a clean responsive grid system alongside a high-resolution portrait.
-![About Me Section](./public/images/readme_about.png)
+## Overview
 
-### 3. Contact & Footer Section
-Provides smooth-scroll action anchors to project sections and direct contact links.
-![Contact Section](./public/images/readme_contact.png)
+- Full-screen hero with a local background video and play/pause control
+- Multilingual loading animation in Telugu, Hindi, and English
+- Responsive about, selected projects, contact, and footer sections
+- Lenis-powered smooth scrolling with GSAP and Framer Motion transitions
+- Downloadable CV and direct links to GitHub, LinkedIn, Instagram, and email
+- Mobile-friendly layout with touch scrolling support
 
----
+## Built With
 
-## ✨ Features
+- [Next.js 14](https://nextjs.org/) with the App Router
+- [React 18](https://react.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [GSAP](https://gsap.com/) and [Framer Motion](https://www.framer.com/motion/)
+- [Lenis](https://lenis.darkroom.engineering/) for smooth scrolling
+- [React Spring](https://www.react-spring.dev/) and [Lucide React](https://lucide.dev/)
 
-- **Multi-Language Logo Loader**: A custom loading screen centering the avatar logo and cycling the text "TANUSH V PORTFOLIO" in Telugu (`తనుష్ పోర్ట్ఫోలియో`), Hindi (`तनुष पोर्टफोलियो`), and English (`TANUSH V PORTFOLIO`) with smooth Framer Motion fades.
-- **Background Video Hero**: High-definition video with floating play/pause controls, vertically centered left copy block, and customized diagonal/vertical action icons.
-- **Responsive Layout Architecture**: Re-engineered overlaps to display clean grid layouts on mobile and desktop viewports.
-- **Lenis Smooth Scroll on Mobile**: Fully enabled smooth physics inertia scrolling on touch devices (`syncTouch` and `smoothTouch`).
-- **Mobile Performance Optimizations**: Auto-scaling sphere particle vertex density on mobile screens (reducing overhead from 4,096 to 1,024 points) to keep scrolling frame rates high.
-- **Uncropped Selected Projects**: Clear list row layouts featuring contain-fit screenshot thumbnails with dynamic hover offsets.
+## Getting Started
 
----
+### Prerequisites
 
-## 🛠️ Tech Stack
+- Node.js 18 or newer
+- npm
 
-- **Framework**: Next.js 14
-- **Styling**: Tailwind CSS
-- **Animations**: GSAP, Framer Motion, React Spring
-- **3D Renderers**: React Three Fiber, React Three Drei, Three.js
-- **Scroll Engine**: Lenis (Smooth Scroll)
+### Installation
 
----
+```bash
+git clone https://github.com/Tanush-ai/video-portfolio.git
+cd video-portfolio
+npm install
+```
 
-## 📦 Local Installation
+### Development
 
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd portfolio_day7
-   ```
+```bash
+npm run dev
+```
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-3. Run the development server:
-   ```bash
-   npm run dev
-   ```
+### Production Build
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
-
----
-
-## 🚀 Build for Production
-
-To compile and verify page routes for static delivery:
 ```bash
 npm run build
 npm start
 ```
+
+## Project Structure
+
+```text
+app/              Next.js layout, page, and global styles
+components/       Portfolio sections and reusable UI components
+public/            Hero media, profile assets, and project imagery
+tailwind.config.js Tailwind configuration
+```
+
+## Screenshots
+
+### Hero
+
+![Hero section](./public/images/readme_hero.png)
+
+### About
+
+![About section](./public/images/readme_about.png)
+
+### Contact
+
+![Contact section](./public/images/readme_contact.png)
+
+## Connect
+
+- [GitHub](https://github.com/Tanush-ai)
+- [LinkedIn](https://www.linkedin.com/in/tanush-v)
+- [Instagram](https://www.instagram.com/er.tanush)
+- [Email](mailto:tanushvelgpudi123@gmail.com)
+
+## License
+
+This project is available under the terms of the [MIT License](./LICENSE).
