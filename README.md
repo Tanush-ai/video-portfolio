@@ -59,20 +59,6 @@ public/            Hero media, profile assets, and project imagery
 tailwind.config.js Tailwind configuration
 ```
 
-## Screenshots
-
-### Hero
-
-![Hero section](./public/images/readme_hero.png)
-
-### About
-
-![About section](./public/images/readme_about.png)
-
-### Contact
-
-![Contact section](./public/images/readme_contact.png)
-
 ## Connect
 
 - [GitHub](https://github.com/Tanush-ai)
