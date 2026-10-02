@@ -31,6 +31,10 @@ export default function HorizontalScroll() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     gsap.registerPlugin(ScrollTrigger);
+    // Prevents mobile address bar show/hide from triggering full pin rebuild jumps
+    ScrollTrigger.config({ ignoreMobileResize: true });
+
+    const isMobile = window.innerWidth < 768;
     const ctx = gsap.context(() => {
       const chars = textRef.current.querySelectorAll(".hs-char");
       const scrollTween = gsap.to(textRef.current, {
@@ -43,8 +47,8 @@ export default function HorizontalScroll() {
       });
       chars.forEach((char) => {
         gsap.from(char, {
-          yPercent: gsap.utils.random(-200, 200),
-          rotation: gsap.utils.random(-20, 20),
+          yPercent: gsap.utils.random(isMobile ? -80 : -200, isMobile ? 80 : 200),
+          rotation: gsap.utils.random(isMobile ? -10 : -20, isMobile ? 10 : 20),
           ease: "back.out(1.2)",
           scrollTrigger: { trigger: char, containerAnimation: scrollTween, start: "left 100%", end: "left 30%", scrub: 1 },
         });

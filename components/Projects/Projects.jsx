@@ -44,15 +44,21 @@ const Row = ({ item, index }) => {
   return (
     <li className="pj-row">
       <Wrapper className={`pj-link${hasLink ? "" : " pj-link--static"}`} {...(hasLink ? { href: item.href, target: "_blank", rel: "noreferrer" } : {})}>
-        <span className="pj-num">{String(index + 1).padStart(2, "0")}</span>
-        {item.image && <img src={item.image} alt={item.name} className="w-20 h-14 sm:w-28 sm:h-18 object-contain shrink-0 bg-white/5 border border-white/10 rounded-xl" />}
-        <div className="pj-meta">
-          <span className="pj-name">{item.name}</span>
-          {item.role && <span className="pj-role">{item.role}</span>}
-          {item.note && <span className="pj-note">{item.note}</span>}
+        <span className="pj-num shrink-0">{String(index + 1).padStart(2, "0")}</span>
+        {item.image && (
+          <img
+            src={item.image}
+            alt={item.name}
+            className="w-14 h-11 sm:w-20 sm:h-14 md:w-28 md:h-18 object-cover shrink-0 bg-white/5 border border-white/10 rounded-lg sm:rounded-xl"
+          />
+        )}
+        <div className="pj-meta min-w-0 flex-1">
+          <span className="pj-name truncate sm:overflow-visible sm:whitespace-normal">{item.name}</span>
+          {item.role && <span className="pj-role truncate sm:overflow-visible sm:whitespace-normal">{item.role}</span>}
+          {item.note && <span className="pj-note line-clamp-2 sm:line-clamp-none">{item.note}</span>}
         </div>
-        <span className="pj-kind">{item.kind}</span>
-        <span className="pj-arrow">
+        <span className="pj-kind shrink-0">{item.kind}</span>
+        <span className="pj-arrow shrink-0">
           {hasLink ? <svg viewBox="0 0 24 24" width="100%" height="100%" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M7 17 17 7m-9 0h9v9"/></svg> : "•"}
         </span>
       </Wrapper>

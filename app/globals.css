@@ -111,6 +111,7 @@ html {
 #loader {
   width: 100%;
   height: 100vh;
+  height: 100dvh;
   position: fixed;
   inset: 0;
   z-index: 100002;
@@ -124,6 +125,7 @@ html {
 #hero-section {
   width: 100%;
   height: 100vh;
+  height: 100dvh;
   position: relative;
   overflow: hidden;
   background-color: var(--color-bg);
@@ -205,6 +207,10 @@ html {
   border-bottom: 1.5px solid var(--color-border);
   padding-bottom: 2vw;
   margin-bottom: 1vw;
+}
+
+.pj-head--secondary {
+  margin-top: 5vw;
 }
 
 .pj-label {
@@ -342,6 +348,7 @@ html {
   top: 0;
   width: 100%;
   height: 100vh;
+  height: 100dvh;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -601,48 +608,129 @@ html {
   color: var(--color-text-subtle);
 }
 
-/* RESPONSIVE SCALING STYLES */
+/* =====================================================
+   RESPONSIVE SCALING — Mobile-first overhaul
+   Why: All base styles use vw units optimised for desktop
+   (1440px+). Below 1024px these collapse to sub-readable
+   sizes. These overrides replace them with clamp()/px
+   values that work well at every viewport width.
+   ===================================================== */
+
+/* ------ Tablet / Landscape phone (≤ 1024px) -------- */
 @media (max-width: 1024px) {
-  #projects-section { padding: 12vw 6vw; }
-  .about-inline-services__head { padding-bottom: 1.8vw; margin-bottom: 2.8vw; }
-  .about-inline-services__label { font-size: 2.4vw; }
-  .about-inline-services__grid { grid-template-columns: 1fr; }
-  .about-inline-services__item { padding: 4vw 0 !important; }
-  .about-inline-services__item h4 { font-size: 4.8vw; }
-  .about-inline-services__item p { font-size: 2.4vw; max-width: 60ch; margin-top: 2vw; }
-  .pj-head { padding-bottom: 4vw; margin-bottom: 2vw; }
-  .pj-label { font-size: 2.4vw; }
-  .pj-title { font-size: 9vw; }
-  .pj-link { gap: 4vw; padding: 4vw 0; }
-  .pj-num { font-size: 2.6vw; min-width: 8vw; }
-  .pj-name { font-size: 6vw; }
-  .pj-role { font-size: 2.4vw; }
-  .pj-note { font-size: 2.4vw; }
-  .pj-kind { display: none; }
-  .pj-arrow { width: 6.5vw; height: 6.5vw; }
-  #contact-section { height: auto; min-height: 70vh; padding: 12vw 6vw; gap: 2.5vw; }
-  #ct-eyebrow { font-size: 2.8vw; letter-spacing: 0.15em; }
-  #ct-headline { font-size: clamp(2.8rem, 18vw, 7rem); }
-  #ct-email { font-size: 3.2vw; margin-top: 1.5vw; }
-  #ct-actions { flex-direction: column; gap: 3vw; width: 100%; }
-  #ct-btn, #ct-btn-secondary { width: 80vw; max-width: 100%; min-height: 56px; padding: 18px 24px; font-size: 3vw; }
-  .footer-top { flex-direction: column; gap: 8vw; }
-  .f-logo { font-size: 14vw; }
-  .f-desc { font-size: 4vw; }
-  .footer-links { flex-direction: column; gap: 6vw; }
-  .f-col h3 { font-size: 3.2vw; }
-  .f-col a { font-size: 4vw; }
-  .footer-bottom { flex-direction: column; gap: 3vw; font-size: 3vw; }
+  /* About / Services grid */
+  .about-inline-services__head {
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+  .about-inline-services__label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+  }
+  .about-inline-services__grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .about-inline-services__item {
+    padding: 20px 0 !important;
+    border-right: none !important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+  .about-inline-services__item h4 { font-size: clamp(15px, 3.5vw, 22px); }
+  .about-inline-services__item p  { font-size: clamp(13px, 2vw, 16px); margin-top: 8px; max-width: 60ch; }
+
+  /* Projects */
+  #projects-section { padding: 60px 24px 72px 24px; }
+  .pj-head  { padding-bottom: 18px; margin-bottom: 12px; }
+  .pj-head--secondary { margin-top: 48px; }
+  .pj-label { font-size: clamp(10px, 2vw, 13px); letter-spacing: 0.2em; }
+  .pj-title { font-size: clamp(28px, 8vw, 56px); }
+  .pj-link  { gap: 16px; padding: 18px 0; align-items: center; }
+  .pj-num   { font-size: clamp(11px, 2vw, 14px); min-width: 32px; }
+  .pj-name  { font-size: clamp(18px, 5vw, 36px); }
+  .pj-role  { font-size: clamp(11px, 1.8vw, 14px); letter-spacing: 0.12em; }
+  .pj-note  { font-size: clamp(12px, 1.8vw, 15px); }
+  .pj-kind  { display: none; }
+  .pj-arrow { width: 36px; height: 36px; flex-shrink: 0; }
+
+  /* Contact */
+  #contact-section {
+    height: auto;
+    min-height: 70vh;
+    padding: 72px 24px;
+    gap: 16px;
+  }
+  #ct-eyebrow  { font-size: clamp(11px, 2.2vw, 14px); letter-spacing: 0.15em; margin-bottom: 8px; }
+  #ct-headline { font-size: clamp(44px, 18vw, 120px); }
+  #ct-email    { font-size: clamp(14px, 2.8vw, 20px); margin-top: 12px; }
+  #ct-actions  { flex-direction: column; gap: 12px; width: 100%; margin-top: 20px; }
+  #ct-btn, #ct-btn-secondary {
+    width: min(80vw, 340px);
+    max-width: 100%;
+    min-height: 52px;
+    height: auto;
+    padding: 16px 24px;
+    font-size: clamp(12px, 2.5vw, 15px);
+    border-radius: 100px;
+  }
+
+  /* Footer */
+  .footer-top     { flex-direction: column; gap: 40px; padding-bottom: 40px; }
+  .footer-brand   { width: 100%; gap: 16px; }
+  .f-logo         { font-size: clamp(40px, 12vw, 80px); }
+  .f-desc         { font-size: clamp(14px, 3vw, 17px); }
+  .f-socials      { gap: 12px; margin-top: 8px; }
+  .f-socials a    { width: 44px; height: 44px; } /* 44px minimum touch target */
+  .footer-links   { flex-direction: column; gap: 32px; }
+  .f-col h3       { font-size: clamp(11px, 2.5vw, 14px); margin-bottom: 12px; }
+  .f-col a        { font-size: clamp(14px, 3vw, 17px); }
+  .footer-bottom  { flex-direction: column; gap: 8px; font-size: clamp(12px, 2.5vw, 14px); padding-top: 20px; text-align: center; }
 }
 
-@media (max-width: 480px) {
-  #projects-section { padding: 20vw 6vw 14vw 6vw; }
-  .pj-link { gap: 3vw; padding: 5vw 0; min-height: 56px; }
-  .pj-num { min-width: 10vw; }
-  .pj-arrow { width: 9vw; height: 9vw; }
-  #ct-eyebrow { font-size: 3.6vw; }
-  #ct-headline { font-size: clamp(3rem, 26vw, 7rem); }
-  #ct-email { font-size: 4vw; word-break: break-all; }
-  #ct-btn, #ct-btn-secondary { font-size: 3.6vw; width: 86vw; }
-  .f-logo { font-size: 16vw; }
+/* ------ Portrait phone (≤ 640px) ------------------- */
+@media (max-width: 640px) {
+  /* About / Services */
+  .about-inline-services__label { font-size: 10px; }
+  .about-inline-services__item h4 { font-size: 17px; }
+  .about-inline-services__item p  { font-size: 14px; }
+
+  /* Projects */
+  #projects-section { padding: 52px 20px 60px 20px; }
+  .pj-head  { padding-bottom: 14px; margin-bottom: 8px; }
+  .pj-head--secondary { margin-top: 36px; }
+  .pj-label { font-size: 10px; }
+  .pj-title { font-size: clamp(26px, 10vw, 40px); }
+  .pj-link  { gap: 12px; padding: 16px 0; min-height: 64px; }
+  .pj-num   { font-size: 11px; min-width: 28px; }
+  .pj-name  { font-size: clamp(16px, 6vw, 28px); }
+  .pj-role  { font-size: 11px; }
+  .pj-note  { font-size: 12px; }
+  .pj-arrow { width: 32px; height: 32px; }
+
+  /* Hero video controls — prevent clipping on small screens */
+  .hero-controls { bottom: 16px !important; right: 12px !important; gap: 8px !important; }
+
+  /* Contact */
+  #contact-section  { padding: 56px 20px; gap: 12px; }
+  #ct-eyebrow       { font-size: 10px; }
+  #ct-headline      { font-size: clamp(40px, 22vw, 80px); }
+  #ct-email         { font-size: 13px; word-break: break-all; }
+  #ct-btn, #ct-btn-secondary { width: 90vw; font-size: 12px; min-height: 52px; }
+
+  /* Footer */
+  #main-footer  { padding: 48px 20px 24px 20px; }
+  .f-logo       { font-size: clamp(36px, 14vw, 60px); }
+  .f-desc       { font-size: 14px; }
+  .f-col h3     { font-size: 11px; }
+  .f-col a      { font-size: 15px; }
+  .footer-bottom { font-size: 12px; }
 }
+
+/* ------ Very small phones (≤ 380px) ---------------- */
+@media (max-width: 380px) {
+  #ct-headline { font-size: clamp(36px, 24vw, 60px); }
+  .pj-name     { font-size: 15px; }
+  .f-logo      { font-size: 36px; }
+}
+

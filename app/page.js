@@ -68,10 +68,11 @@ export default function Home() {
   return (
     <SmoothScroll>
       <Suspense fallback={<div className="w-screen bg-black h-screen text-white text-3xl flex items-center justify-center">Loading...</div>}>
-        <div className="bg-bg text-fg h-auto w-screen overflow-x-hidden">
+        <div className="bg-bg text-fg h-auto w-full max-w-full overflow-x-hidden">
           <Navbar />
           <HeroSection />
-          <div id="about" className="h-auto relative mt-16 md:mt-[10rem] px-6 sm:px-12 lg:px-20 pb-24 z-10 flex flex-col gap-8 md:gap-12 animate-fade-in" ref={ref}>
+          {/* overflow-hidden prevents the wide Skiggle SVG background from causing horizontal scrollbars on mobile */}
+          <div id="about" className="h-auto relative mt-12 md:mt-[10rem] px-4 sm:px-12 lg:px-20 pb-20 md:pb-24 z-10 flex flex-col gap-8 md:gap-12 animate-fade-in overflow-hidden" ref={ref}>
             <Skiggle />
             <Header />
             <div className="w-full flex flex-col md:flex-row gap-12 lg:gap-16 items-start relative z-10 mt-6 md:mt-12">

@@ -81,19 +81,23 @@ export default function Navbar() {
             <img src="/avatar-logo.jpg" alt="Logo" className="w-8 h-8 rounded-full object-cover object-top border border-fg/10" />
             <span className="tracking-wider font-semibold text-lg text-fg">TANUSH V</span>
           </Link>
-          <button
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            className="nav_btn_sm flex items-center justify-center cursor-pointer"
-            onClick={() => {
-              const next = !mobileOpen;
-              setMobileOpen(next);
-              setRotate({ transform: next ? "rotate(45deg)" : "rotate(0deg)" });
-            }}
-          >
-            <animated.div className="text-[0.55rem] leading-none" style={rotate}>
-              {mobileOpen ? "✕" : "⬤ ⬤"}
-            </animated.div>
-          </button>
+          <div className="flex items-center gap-1.5">
+            {/* Mobile theme toggle button allows instant dark/light switching on phones */}
+            <ThemeButton compact />
+            <button
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              className="nav_btn_sm flex items-center justify-center cursor-pointer"
+              onClick={() => {
+                const next = !mobileOpen;
+                setMobileOpen(next);
+                setRotate({ transform: next ? "rotate(45deg)" : "rotate(0deg)" });
+              }}
+            >
+              <animated.div className="text-[0.55rem] leading-none" style={rotate}>
+                {mobileOpen ? "✕" : "⬤ ⬤"}
+              </animated.div>
+            </button>
+          </div>
         </div>
       </div>
       <div className={`fixed inset-0 z-[100000] lg:hidden transition-opacity duration-300 ${mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
@@ -102,21 +106,25 @@ export default function Navbar() {
           <nav className="flex flex-col gap-1">
             {MOBILE_NAV_ITEMS.map((item, i) => (
               <a key={item.target} href={`#${item.target}`} onClick={(e) => handleMobileNav(e, item.target)}
-                className="flex items-center justify-between py-4 border-b border-theme-border text-fg text-3xl font-semibold">
+                className="flex items-center justify-between py-4 border-b border-theme-border text-fg text-2xl sm:text-3xl font-semibold">
                 <span>{item.label}</span>
                 <span className="text-fg-muted text-base">0{i + 1}</span>
               </a>
             ))}
           </nav>
-          <div className="mt-auto pt-8 flex flex-col gap-3">
-            <p className="text-fg-muted text-xs tracking-[0.2em] uppercase">Get in touch</p>
-            <a href={`mailto:${EMAIL}`} onClick={() => setMobileOpen(false)} className="flex items-center justify-between bg-fg text-bg rounded-full px-5 py-4 text-sm font-semibold">
+          <div className="mt-auto pt-6 flex flex-col gap-3">
+            <div className="flex items-center justify-between py-2 border-t border-b border-theme-border">
+              <span className="text-fg-muted text-xs tracking-[0.2em] uppercase font-semibold">Appearance</span>
+              <ThemeButton />
+            </div>
+            <p className="text-fg-muted text-xs tracking-[0.2em] uppercase mt-2">Get in touch</p>
+            <a href={`mailto:${EMAIL}`} onClick={() => setMobileOpen(false)} className="flex items-center justify-between bg-fg text-bg rounded-full px-5 py-3.5 text-sm font-semibold min-h-[48px]">
               <span>EMAIL</span><span>↗</span>
             </a>
-            <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" onClick={() => setMobileOpen(false)} className="flex items-center justify-between border-2 border-fg text-fg rounded-full px-5 py-4 text-sm font-semibold">
+            <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" onClick={() => setMobileOpen(false)} className="flex items-center justify-between border-2 border-fg text-fg rounded-full px-5 py-3.5 text-sm font-semibold min-h-[48px]">
               <span>WHATSAPP</span><span>↗</span>
             </a>
-            <a href={TELEGRAM_URL} target="_blank" rel="noreferrer" onClick={() => setMobileOpen(false)} className="flex items-center justify-between border-2 border-fg text-fg rounded-full px-5 py-4 text-sm font-semibold">
+            <a href={TELEGRAM_URL} target="_blank" rel="noreferrer" onClick={() => setMobileOpen(false)} className="flex items-center justify-between border-2 border-fg text-fg rounded-full px-5 py-3.5 text-sm font-semibold min-h-[48px]">
               <span>TELEGRAM</span><span>↗</span>
             </a>
           </div>

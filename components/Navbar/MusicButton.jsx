@@ -31,15 +31,24 @@ const MoonIcon = () => (
 /**
  * ThemeButton component toggles dark/light theme mode state.
  * 
+ * Why this code exists:
+ * Allows visitors on both desktop and mobile viewports to toggle between
+ * dark and light visual aesthetics seamlessly without page reloads.
+ * 
  * Tricky logic:
  * Reads document.documentElement.dataset.theme on mount to stay in sync with
- * inline theme bootstrapping script in layout.js, avoiding hydrations mismatch.
+ * inline theme bootstrapping script in layout.js, avoiding hydration mismatch.
+ * In compact mode for mobile, renders a 40x40px touch-friendly circular button
+ * with accessible aria-label instead of the wider desktop pill badge.
  * 
  * TODO: Support system preference change listeners (prefers-color-scheme).
  * 
+ * @param {Object} props Component properties
+ * @param {boolean} [props.compact=false] When true, renders an icon-only circular button suitable for mobile headers
+ * @param {string} [props.className=""] Additional CSS classes for custom styling
  * @returns {React.ReactElement} Theme toggle button component
  */
-const ThemeButton = () => {
+const ThemeButton = ({ compact = false, className = '' }) => {
   const [theme, setTheme] = useState('light');
 
   useEffect(() => {
@@ -50,6 +59,7 @@ const ThemeButton = () => {
 
   /**
    * Toggles theme state and syncs document element attribute + localStorage.
+   * @returns {void}
    */
   const toggle = () => {
     const next = theme === 'light' ? 'dark' : 'light';
@@ -62,8 +72,21 @@ const ThemeButton = () => {
 
   const isDark = theme === 'dark';
 
+  if (compact) {
+    return (
+      <button
+        type="button"
+        onClick={toggle}
+        aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+        className={`nav_btn_sm flex items-center justify-center cursor-pointer transition-transform active:scale-90 ${className}`}
+      >
+        {isDark ? <SunIcon /> : <MoonIcon />}
+      </button>
+    );
+  }
+
   return (
-    <button type="button" onClick={toggle} className='nav_btn_lg nav_btn_light flex items-center justify-center hover:bg-brblue py-6 cursor-pointer'>
+    <button type="button" onClick={toggle} className={`nav_btn_lg nav_btn_light flex items-center justify-center hover:bg-brblue py-6 cursor-pointer ${className}`}>
       {isDark ? <SunIcon /> : <MoonIcon />}
       {isDark ? 'LIGHT' : 'DARK'}
     </button>
