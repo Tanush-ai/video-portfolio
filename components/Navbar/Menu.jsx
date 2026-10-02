@@ -9,8 +9,8 @@ import { useSpring, a } from "@react-spring/web";
 import React, { useEffect, useRef, useState } from "react";
 
 const EMAIL = "tanushvelgpudi123@gmail.com";
-const WHATSAPP_URL = "https://wa.me/917569949639";
-const TELEGRAM_URL = "https://t.me/+917569949639";
+const WHATSAPP_URL = "https://wa.me/919449237762";
+const TELEGRAM_URL = "https://t.me/+919449237762";
 
 /**
  * Smoothly scrolls to target element ID or top of window using Lenis if available.

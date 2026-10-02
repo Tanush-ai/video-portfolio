@@ -15,8 +15,8 @@ import Link from "next/link";
 import ThemeButton from "./MusicButton";
 
 const EMAIL = "tanushvelgpudi123@gmail.com";
-const WHATSAPP_URL = "https://wa.me/917569949639";
-const TELEGRAM_URL = "https://t.me/+917569949639";
+const WHATSAPP_URL = "https://wa.me/919449237762";
+const TELEGRAM_URL = "https://t.me/+919449237762";
 
 const MOBILE_NAV_ITEMS = [
   { label: "HOME", target: "top" },
