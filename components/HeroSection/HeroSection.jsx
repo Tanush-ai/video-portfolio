@@ -28,7 +28,8 @@ export default function HeroSection() {
   const loaderRef = useRef(null);
   const [loaderDone, setLoaderDone] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
+  const [hasEnded, setHasEnded] = useState(false);
   const [currentText, setCurrentText] = useState("తనుష్ పోర్ట్ఫోలియో");
 
   useEffect(() => {
@@ -36,23 +37,66 @@ export default function HeroSection() {
     document.body.style.overflow = "hidden";
     gsap.set(videoContainerRef.current, { autoAlpha: 0, scale: 1.05 });
 
-    // Ensure video begins playing immediately on mount (muted satisfies browser autoplay restrictions)
-    if (videoRef.current) {
-      videoRef.current.muted = true;
-      const playPromise = videoRef.current.play();
+    const video = videoRef.current;
+
+    // Enforce single-loop playback: remove looping so video plays through exactly once
+    if (video) {
+      video.loop = false;
+      video.muted = false;
+
+      // Attempt unmuted playback directly on page load
+      const playPromise = video.play();
       if (playPromise !== undefined) {
         playPromise
-          .then(() => setIsPlaying(true))
-          .catch(() => setIsPlaying(false));
+          .then(() => {
+            setIsPlaying(true);
+            setIsMuted(false);
+          })
+          .catch(() => {
+            // Modern browsers restrict unmuted autoplay without prior user interaction.
+            // In this case, start muted so video movement starts, and automatically unmute on first gesture.
+            video.muted = true;
+            setIsMuted(true);
+            video.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+
+            /**
+             * Automatically un-mutes video upon the very first user interaction event.
+             */
+            const handleFirstInteraction = () => {
+              if (videoRef.current) {
+                videoRef.current.muted = false;
+                setIsMuted(false);
+              }
+              window.removeEventListener("pointerdown", handleFirstInteraction);
+              window.removeEventListener("keydown", handleFirstInteraction);
+              window.removeEventListener("scroll", handleFirstInteraction);
+            };
+
+            window.addEventListener("pointerdown", handleFirstInteraction, { once: true });
+            window.addEventListener("keydown", handleFirstInteraction, { once: true });
+            window.addEventListener("scroll", handleFirstInteraction, { once: true });
+          });
       }
+    }
+
+    /**
+     * Handles single-loop completion when video finishes playing.
+     */
+    const handleEnded = () => {
+      setIsPlaying(false);
+      setHasEnded(true);
+    };
+
+    if (video) {
+      video.addEventListener("ended", handleEnded);
     }
 
     const tl = gsap.timeline({
       onComplete: () => {
         setLoaderDone(true);
         document.body.style.overflow = "";
-        // Re-verify playback state when loader finishes unveiling hero section
-        if (videoRef.current && videoRef.current.paused) {
+        // Ensure video is running when loader finishes unveiling hero section
+        if (videoRef.current && videoRef.current.paused && !videoRef.current.ended) {
           videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
         }
       },
@@ -68,6 +112,9 @@ export default function HeroSection() {
       clearTimeout(t1);
       clearTimeout(t2);
       document.body.style.overflow = "";
+      if (video) {
+        video.removeEventListener("ended", handleEnded);
+      }
     };
   }, []);
 
@@ -88,6 +135,7 @@ export default function HeroSection() {
 
   /**
    * Toggles play and pause states for background HTML5 video element.
+   * If the single loop has completed, restarts playback from the beginning.
    * @returns {void}
    */
   const togglePlay = () => {
@@ -96,6 +144,10 @@ export default function HeroSection() {
       videoRef.current.pause();
       setIsPlaying(false);
     } else {
+      if (hasEnded || videoRef.current.ended) {
+        videoRef.current.currentTime = 0;
+        setHasEnded(false);
+      }
       videoRef.current.play()
         .then(() => setIsPlaying(true))
         .catch((err) => console.log("Video play error:", err));
@@ -131,8 +183,6 @@ export default function HeroSection() {
             ref={videoRef}
             src="/hero-bg-video.mp4"
             autoPlay
-            muted
-            loop
             playsInline
             preload="auto"
             className="w-full h-full object-cover object-center"
@@ -180,7 +230,7 @@ export default function HeroSection() {
             className="flex items-center gap-3 bg-bg/85 border border-fg/10 px-4 py-2.5 rounded-full text-fg hover:bg-fg hover:text-bg transition-all active:scale-95 shadow-md"
           >
             <span className="text-[11px] font-bold tracking-[0.18em] uppercase pr-1">
-              {isPlaying ? "PAUSE VIDEO" : "PLAY VIDEO"}
+              {isPlaying ? "PAUSE VIDEO" : hasEnded ? "REPLAY VIDEO" : "PLAY VIDEO"}
             </span>
           </button>
         </div>
