@@ -27,17 +27,34 @@ export default function HeroSection() {
   const videoRef = useRef(null);
   const loaderRef = useRef(null);
   const [loaderDone, setLoaderDone] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
   const [currentText, setCurrentText] = useState("తనుష్ పోర్ట్ఫోలియో");
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     document.body.style.overflow = "hidden";
     gsap.set(videoContainerRef.current, { autoAlpha: 0, scale: 1.05 });
+
+    // Ensure video begins playing immediately on mount (muted satisfies browser autoplay restrictions)
+    if (videoRef.current) {
+      videoRef.current.muted = true;
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => setIsPlaying(true))
+          .catch(() => setIsPlaying(false));
+      }
+    }
+
     const tl = gsap.timeline({
       onComplete: () => {
         setLoaderDone(true);
         document.body.style.overflow = "";
+        // Re-verify playback state when loader finishes unveiling hero section
+        if (videoRef.current && videoRef.current.paused) {
+          videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+        }
       },
     });
     tl.to(loaderRef.current, { y: "-100%", duration: 1.1, ease: "power3.out" }, "start+=3.0");
@@ -71,6 +88,7 @@ export default function HeroSection() {
 
   /**
    * Toggles play and pause states for background HTML5 video element.
+   * @returns {void}
    */
   const togglePlay = () => {
     if (!videoRef.current) return;
@@ -78,11 +96,21 @@ export default function HeroSection() {
       videoRef.current.pause();
       setIsPlaying(false);
     } else {
-      videoRef.current.muted = false;
       videoRef.current.play()
         .then(() => setIsPlaying(true))
-        .catch(err => console.log(err));
+        .catch((err) => console.log("Video play error:", err));
     }
+  };
+
+  /**
+   * Toggles audio mute and unmute states for the background HTML5 video element.
+   * @returns {void}
+   */
+  const toggleMute = () => {
+    if (!videoRef.current) return;
+    const nextMuted = !videoRef.current.muted;
+    videoRef.current.muted = nextMuted;
+    setIsMuted(nextMuted);
   };
 
   return (
@@ -99,7 +127,16 @@ export default function HeroSection() {
       </div>
       <section id="hero-section" ref={sectionRef} className="relative w-full h-screen min-h-[600px] overflow-hidden select-none">
         <div ref={videoContainerRef} className="absolute inset-0 w-full h-full bg-black">
-          <video ref={videoRef} src="/hero-bg-video.mp4" loop playsInline preload="auto" className="w-full h-full object-cover object-center" />
+          <video
+            ref={videoRef}
+            src="/hero-bg-video.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className="w-full h-full object-cover object-center"
+          />
         </div>
         <motion.div initial="hidden" animate={loaderDone ? "visible" : "hidden"}
           variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 2.2 } } }}
@@ -118,17 +155,35 @@ export default function HeroSection() {
               <span>View My Work</span>
               <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-none stroke-current" strokeWidth="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
             </a>
-            <a href="/Devender_Gopagoni_Resume.pdf" target="_blank" rel="noopener noreferrer" download className="text-xs font-semibold border-b border-current flex items-center gap-1.5">
+            {/* Download link targeting Tanush V's updated MLOps & AI Systems resume PDF */}
+            <a href="/Tanush_V_Resume.pdf" target="_blank" rel="noopener noreferrer" download="Tanush_V_Resume.pdf" className="text-xs font-semibold border-b border-current flex items-center gap-1.5">
               <span>Download CV</span>
               <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-none stroke-current" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
             </a>
           </div>
         </motion.div>
-        <button onClick={togglePlay} className="absolute bottom-8 right-8 z-20 flex items-center gap-3 bg-bg/85 border border-fg/10 px-4 py-2.5 rounded-full text-fg hover:bg-fg hover:text-bg transition-all active:scale-95 shadow-md">
-          <span className="text-[11px] font-bold tracking-[0.18em] uppercase pr-2">
-            {isPlaying ? "PAUSE VIDEO" : "PLAY VIDEO"}
-          </span>
-        </button>
+        {/* Playback & Audio Controls */}
+        <div className="absolute bottom-8 right-8 z-20 flex items-center gap-2.5">
+          <button
+            onClick={toggleMute}
+            aria-label={isMuted ? "Unmute audio" : "Mute audio"}
+            className="flex items-center justify-center w-10 h-10 rounded-full bg-bg/85 border border-fg/10 text-fg hover:bg-fg hover:text-bg transition-all active:scale-95 shadow-md"
+          >
+            {isMuted ? (
+              <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current" strokeWidth="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+            ) : (
+              <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current" strokeWidth="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+            )}
+          </button>
+          <button
+            onClick={togglePlay}
+            className="flex items-center gap-3 bg-bg/85 border border-fg/10 px-4 py-2.5 rounded-full text-fg hover:bg-fg hover:text-bg transition-all active:scale-95 shadow-md"
+          >
+            <span className="text-[11px] font-bold tracking-[0.18em] uppercase pr-1">
+              {isPlaying ? "PAUSE VIDEO" : "PLAY VIDEO"}
+            </span>
+          </button>
+        </div>
       </section>
     </>
   );
