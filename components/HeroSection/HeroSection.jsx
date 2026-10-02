@@ -26,6 +26,7 @@ export default function HeroSection() {
   const videoContainerRef = useRef(null);
   const videoRef = useRef(null);
   const loaderRef = useRef(null);
+  const timelineRef = useRef(null);
   const [loaderDone, setLoaderDone] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
@@ -39,44 +40,10 @@ export default function HeroSection() {
 
     const video = videoRef.current;
 
-    // Enforce single-loop playback: remove looping so video plays through exactly once
+    // Enforce 1-loop playback and configure unmuted audio on load
     if (video) {
       video.loop = false;
       video.muted = false;
-
-      // Attempt unmuted playback directly on page load
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            setIsPlaying(true);
-            setIsMuted(false);
-          })
-          .catch(() => {
-            // Modern browsers restrict unmuted autoplay without prior user interaction.
-            // In this case, start muted so video movement starts, and automatically unmute on first gesture.
-            video.muted = true;
-            setIsMuted(true);
-            video.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
-
-            /**
-             * Automatically un-mutes video upon the very first user interaction event.
-             */
-            const handleFirstInteraction = () => {
-              if (videoRef.current) {
-                videoRef.current.muted = false;
-                setIsMuted(false);
-              }
-              window.removeEventListener("pointerdown", handleFirstInteraction);
-              window.removeEventListener("keydown", handleFirstInteraction);
-              window.removeEventListener("scroll", handleFirstInteraction);
-            };
-
-            window.addEventListener("pointerdown", handleFirstInteraction, { once: true });
-            window.addEventListener("keydown", handleFirstInteraction, { once: true });
-            window.addEventListener("scroll", handleFirstInteraction, { once: true });
-          });
-      }
     }
 
     /**
@@ -91,16 +58,62 @@ export default function HeroSection() {
       video.addEventListener("ended", handleEnded);
     }
 
+    /**
+     * Unmutes video upon the very first user interaction anywhere on the document.
+     * Required by WebKit / Chromium Autoplay Policies when programmatic audio starts.
+     */
+    const handleGlobalInteraction = () => {
+      if (videoRef.current) {
+        videoRef.current.muted = false;
+        setIsMuted(false);
+        if (videoRef.current.paused && !videoRef.current.ended) {
+          videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+        }
+      }
+      window.removeEventListener("pointerdown", handleGlobalInteraction);
+      window.removeEventListener("keydown", handleGlobalInteraction);
+      window.removeEventListener("touchstart", handleGlobalInteraction);
+      window.removeEventListener("click", handleGlobalInteraction);
+    };
+
+    window.addEventListener("pointerdown", handleGlobalInteraction, { once: true });
+    window.addEventListener("keydown", handleGlobalInteraction, { once: true });
+    window.addEventListener("touchstart", handleGlobalInteraction, { once: true });
+    window.addEventListener("click", handleGlobalInteraction, { once: true });
+
+    // GSAP sequence controlling multilingual loader intro and opening portfolio
     const tl = gsap.timeline({
       onComplete: () => {
         setLoaderDone(true);
         document.body.style.overflow = "";
-        // Ensure video is running when loader finishes unveiling hero section
-        if (videoRef.current && videoRef.current.paused && !videoRef.current.ended) {
-          videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
-        }
       },
     });
+    timelineRef.current = tl;
+
+    // Start video from the very beginning unmuted exactly when the portfolio begins opening
+    tl.call(() => {
+      if (videoRef.current) {
+        videoRef.current.currentTime = 0;
+        videoRef.current.muted = false;
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              setIsPlaying(true);
+              setIsMuted(false);
+            })
+            .catch(() => {
+              // If browser blocks unmuted audio before user interaction, play muted and let global interaction handler unmute
+              if (videoRef.current) {
+                videoRef.current.muted = true;
+                setIsMuted(true);
+                videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+              }
+            });
+        }
+      }
+    }, null, "start+=3.0");
+
     tl.to(loaderRef.current, { y: "-100%", duration: 1.1, ease: "power3.out" }, "start+=3.0");
     tl.to(videoContainerRef.current, { autoAlpha: 1, scale: 1, duration: 1.2, ease: "power2.out" }, "start+=3.2");
 
@@ -115,8 +128,28 @@ export default function HeroSection() {
       if (video) {
         video.removeEventListener("ended", handleEnded);
       }
+      window.removeEventListener("pointerdown", handleGlobalInteraction);
+      window.removeEventListener("keydown", handleGlobalInteraction);
+      window.removeEventListener("touchstart", handleGlobalInteraction);
+      window.removeEventListener("click", handleGlobalInteraction);
     };
   }, []);
+
+  /**
+   * Fast-tracks opening transition and unlocks unmuted audio immediately if user clicks the loader.
+   * @returns {void}
+   */
+  const handleLoaderClick = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = false;
+      setIsMuted(false);
+      videoRef.current.currentTime = 0;
+      videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+    }
+    if (timelineRef.current && timelineRef.current.progress() < 0.8) {
+      timelineRef.current.seek("start+=3.0");
+    }
+  };
 
   /**
    * Scrolls to work/projects section via Lenis smooth scroll provider.
@@ -167,7 +200,12 @@ export default function HeroSection() {
 
   return (
     <>
-      <div id="loader" ref={loaderRef} style={{ backgroundColor: "#111111", zIndex: 100002, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+      <div
+        id="loader"
+        ref={loaderRef}
+        onClick={handleLoaderClick}
+        style={{ backgroundColor: "#111111", zIndex: 100002, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
+      >
         <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="flex flex-col items-center justify-center text-center px-4">
           <img src="/avatar-logo.jpg" alt="Logo" className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border border-white/10 mb-6 object-cover object-top shadow-lg" />
           <div className="h-10 flex items-center justify-center overflow-hidden">
@@ -175,6 +213,9 @@ export default function HeroSection() {
               {currentText}
             </motion.div>
           </div>
+          <span className="text-[10px] tracking-[0.22em] text-[#F5F1EA]/40 uppercase mt-4 hover:text-[#F5F1EA]/80 transition-colors flex items-center gap-1.5">
+            <span>🔊</span> Tap anywhere to enter with sound
+          </span>
         </motion.div>
       </div>
       <section id="hero-section" ref={sectionRef} className="relative w-full h-screen min-h-[600px] overflow-hidden select-none">
